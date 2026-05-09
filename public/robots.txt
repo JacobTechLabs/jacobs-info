@@ -1,0 +1,16 @@
+# robots.txt for Jacob Tech Info
+# https://jacobtechinfo.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /write/
+Disallow: /api/auth/
+Disallow: /api/internal/
+
+# Sitemap location
+Sitemap: https://jacobtechinfo.com/sitemap.xml
+
+# Crawl rate
+Crawl-delay: 1

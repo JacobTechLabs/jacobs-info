@@ -1,0 +1,123 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--textColor);
+}
+
+.lastUpdated {
+  color: var(--softTextColor);
+  font-size: 0.9rem;
+  margin-bottom: 40px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.section {
+  background: var(--bg);
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid var(--borderColor, #e0e0e0);
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--textColor);
+}
+
+.section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 20px 0 10px 0;
+  color: var(--textColor);
+}
+
+.section p {
+  line-height: 1.8;
+  color: var(--softTextColor);
+  margin-bottom: 15px;
+}
+
+.section ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.section li {
+  line-height: 1.8;
+  color: var(--softTextColor);
+  margin-bottom: 8px;
+}
+
+.section strong {
+  color: var(--textColor);
+  font-weight: 600;
+}
+
+.section a {
+  color: var(--accentColor, #0070f3);
+  text-decoration: underline;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--borderColor, #e0e0e0);
+}
+
+.table th {
+  background-color: var(--softBg);
+  font-weight: 600;
+  color: var(--textColor);
+}
+
+.table td {
+  color: var(--softTextColor);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 15px;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .section {
+    padding: 20px 15px;
+  }
+  
+  .section h2 {
+    font-size: 1.3rem;
+  }
+  
+  .table {
+    font-size: 0.8rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px;
+  }
+}

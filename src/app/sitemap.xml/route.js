@@ -1,4 +1,4 @@
-import prisma from "@/utils/connect";
+import { client } from "@/utils/sanity";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://jacobtechinfo.com";
 
@@ -7,20 +7,14 @@ export async function GET() {
   let categories = [];
 
   try {
-    // Fetch dynamic routes - only if database is available
-    if (process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL) {
-      [posts, categories] = await Promise.all([
-        prisma.post.findMany({
-          select: { slug: true, createdAt: true },
-        }),
-        prisma.category.findMany({
-          select: { slug: true },
-        }),
-      ]);
-    }
+    const [postsData, categoriesData] = await Promise.all([
+      client.fetch(`*[_type == "post"] { "slug": slug.current, _createdAt }`),
+      client.fetch(`*[_type == "category"] { "slug": slug.current }`)
+    ]);
+    posts = postsData;
+    categories = categoriesData;
   } catch (error) {
-    console.error("[SITEMAP_DB_ERROR]", error);
-    // Continue with empty arrays if DB is not available
+    console.error("[SITEMAP_SANITY_ERROR]", error);
   }
 
   // Static routes
@@ -36,7 +30,7 @@ export async function GET() {
 
   // Generate XML
   const generateUrlEntry = (url, priority, changefreq, lastmod = null) => {
-    const lastmodXml = lastmod ? `<lastmod>${lastmod.toISOString()}</lastmod>` : "";
+    const lastmodXml = lastmod ? `<lastmod>${new Date(lastmod).toISOString()}</lastmod>` : "";
     return `
     <url>
       <loc>${BASE_URL}${url}</loc>
@@ -51,7 +45,7 @@ export async function GET() {
   );
 
   const postEntries = posts.map((post) =>
-    generateUrlEntry(`/posts/${post.slug}`, 0.8, "weekly", post.createdAt)
+    generateUrlEntry(`/posts/${post.slug}`, 0.8, "weekly", post._createdAt)
   );
 
   const categoryEntries = categories.map((cat) =>

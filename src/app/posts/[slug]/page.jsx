@@ -2,6 +2,8 @@ import Menu from "@/components/Menu/Menu";
 import styles from "./singlePage.module.css";
 import Image from "next/image";
 import Comments from "@/components/comments/Comments";
+import { PortableText } from "@portabletext/react";
+import { urlFor } from "@/utils/sanity";
 
 const getData = async (slug) => {
   const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
@@ -16,7 +18,7 @@ const getData = async (slug) => {
 };
 
 const SinglePage = async ({ params }) => {
-  const { slug } = params;
+  const { slug } = await params;
 
   const data = await getData(slug);
 
@@ -26,29 +28,32 @@ const SinglePage = async ({ params }) => {
         <div className={styles.textContainer}>
           <h1 className={styles.title}>{data?.title}</h1>
           <div className={styles.user}>
-            {data?.user?.image && (
+            {data?.author?.image && (
               <div className={styles.userImageContainer}>
-                <Image src={data.user.image} alt="" fill className={styles.avatar} />
+                <Image src={data.author.image} alt="" fill className={styles.avatar} />
               </div>
             )}
             <div className={styles.userTextContainer}>
-              <span className={styles.username}>{data?.user.name}</span>
-              <span className={styles.date}>01.01.2024</span>
+              <span className={styles.username}>{data?.author?.name}</span>
+              <span className={styles.date}>{(data?.publishedAt || data?._createdAt || "").substring(0, 10)}</span>
             </div>
           </div>
         </div>
-        {data?.img && (
+        {data?.mainImage && (
           <div className={styles.imageContainer}>
-            <Image src={data.img} alt="" fill className={styles.image} />
+            <Image src={urlFor(data.mainImage).url()} alt="" fill className={styles.image} />
           </div>
         )}
       </div>
       <div className={styles.content}>
         <div className={styles.post}>
-          <div
-            className={styles.description}
-            dangerouslySetInnerHTML={{ __html: data?.desc }}
-          />
+          <div className={styles.description}>
+            {data?.body ? (
+              <PortableText value={data.body} />
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: data?.desc }} />
+            )}
+          </div>
           <div className={styles.comment}>
             <Comments postSlug={slug}/>
           </div>

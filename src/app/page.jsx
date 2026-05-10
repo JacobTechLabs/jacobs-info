@@ -8,7 +8,7 @@ export default function Home({ searchParams }) {
   const page = parseInt(searchParams.page) || 1;
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full pt-24 lg:pt-32">
       <Featured />
       <CategoryList />
       <div className="flex flex-col lg:flex-row gap-12 mt-8">

@@ -52,9 +52,9 @@ const CardList = async ({ page, cat }) => {
   return (
     <div className="flex-[5] mt-12 mb-12">
       <h1 className="text-3xl font-bold mb-8 tracking-tight">Recent Posts</h1>
-      <div className="flex flex-col gap-12">
-        {posts?.map((item) => (
-          <Card item={item} key={item._id} />
+      <div className="flex flex-col gap-16 lg:gap-24">
+        {posts?.map((item, index) => (
+          <Card item={item} key={item._id} index={index} />
         ))}
       </div>
       <div className="mt-12">

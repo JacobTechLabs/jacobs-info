@@ -1,11 +1,29 @@
 import Navbar from "@/components/navbar/Navbar";
 import "./globals.css";
-import { Outfit } from "next/font/google";
+import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import Footer from "@/components/footer/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import AuthProvider from "@/providers/AuthProvider";
 
-const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+// Luxury Editorial Typography
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const metadata = {
   title: {
@@ -62,7 +80,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={outfit.className}>
+      <body className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} font-body`}>
         <AuthProvider>
           <ThemeProvider
             attribute="class"
@@ -71,7 +89,7 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
             <div className="min-h-screen bg-background text-foreground flex flex-col">
-              <div className="container mx-auto px-4 md:px-10 lg:px-20 max-w-7xl flex-1 flex flex-col">
+              <div className="container mx-auto px-4 md:px-10 lg:px-20 xl:px-32 max-w-[1400px] flex-1 flex flex-col">
                 <Navbar />
                 <main className="flex-1">
                   {children}

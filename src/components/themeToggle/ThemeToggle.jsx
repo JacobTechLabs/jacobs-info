@@ -1,32 +1,32 @@
 "use client";
 
-import Image from "next/image";
-import styles from "./themeToggle.module.css";
-import { useContext } from "react";
-import { ThemeContext } from "@/context/ThemeContext";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
-  const { toggle, theme } = useContext(ThemeContext);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
-    <div
-      className={styles.container}
-      onClick={toggle}
-      style={
-        theme === "dark" ? { backgroundColor: "white" } : { backgroundColor: "#0f172a" }
-      }
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="rounded-full relative"
     >
-      <Image src="/moon.png" alt="" width={14} height={14} />
-      <div
-        className={styles.ball}
-        style={
-          theme === "dark"
-            ? { left: 1, background: "#0f172a" }
-            : { right: 1, background: "white" }
-        }
-      ></div>
-      <Image src="/sun.png" alt="" width={14} height={14} />
-    </div>
+      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="sr-only">Toggle theme</span>
+    </Button>
   );
 };
 

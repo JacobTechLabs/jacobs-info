@@ -26,7 +26,7 @@ export const GET = async (req, { params }) => {
     }
 
     // Increment views in Sanity (Fire and forget, don't await to avoid blocking response)
-    client.patch(post._id).inc({views: 1}).commit().catch(console.error);
+    client.patch(post._id).setIfMissing({ views: 0 }).inc({views: 1}).commit().catch(console.error);
     post.views = (post.views || 0) + 1; // optimistically update
 
     return NextResponse.json(post);

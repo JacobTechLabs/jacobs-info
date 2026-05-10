@@ -1,29 +1,25 @@
 import Link from "next/link";
 import React from "react";
-import styles from "./menuCategories.module.css";
 
 const MenuCategories = () => {
   return (
-    <div className={styles.categoryList}>
-      <Link
-        href="/blog?cat=style"
-        className={`${styles.categoryItem} ${styles.style}`}
-      >
+    <div className="flex flex-wrap gap-4 mt-4 mb-10">
+      <Link href="/blog?cat=style" className="px-4 py-2 rounded-lg text-sm font-medium bg-[#57c4ff31]">
         Style
       </Link>
-      <Link href="/blog" className={`${styles.categoryItem} ${styles.fashion}`}>
+      <Link href="/blog" className="px-4 py-2 rounded-lg text-sm font-medium bg-[#da85c731]">
         Fashion
       </Link>
-      <Link href="/blog" className={`${styles.categoryItem} ${styles.food}`}>
+      <Link href="/blog" className="px-4 py-2 rounded-lg text-sm font-medium bg-[#7fb88133]">
         Food
       </Link>
-      <Link href="/blog" className={`${styles.categoryItem} ${styles.travel}`}>
+      <Link href="/blog" className="px-4 py-2 rounded-lg text-sm font-medium bg-[#ff795736]">
         Travel
       </Link>
-      <Link href="/blog" className={`${styles.categoryItem} ${styles.culture}`}>
+      <Link href="/blog" className="px-4 py-2 rounded-lg text-sm font-medium bg-[#ffb04f45]">
         Culture
       </Link>
-      <Link href="/blog" className={`${styles.categoryItem} ${styles.coding}`}>
+      <Link href="/blog" className="px-4 py-2 rounded-lg text-sm font-medium bg-[#5e4fff31]">
         Coding
       </Link>
     </div>

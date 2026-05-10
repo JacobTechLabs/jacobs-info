@@ -1,28 +1,29 @@
 "use client";
-
 import React from "react";
-import styles from "./pagination.module.css";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const Pagination = ({ page, hasPrev, hasNext }) => {
   const router = useRouter();
 
   return (
-    <div className={styles.container}>
-      <button
-        className={styles.button}
+    <div className="flex justify-between items-center w-full">
+      <Button
+        variant="outline"
+        className="w-[120px]"
         disabled={!hasPrev}
         onClick={() => router.push(`?page=${page - 1}`)}
       >
         Previous
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="default"
+        className="w-[120px]"
         disabled={!hasNext}
-        className={styles.button}
         onClick={() => router.push(`?page=${page + 1}`)}
       >
         Next
-      </button>
+      </Button>
     </div>
   );
 };

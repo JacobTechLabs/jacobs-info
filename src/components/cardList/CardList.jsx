@@ -1,22 +1,44 @@
 import React from "react";
-import styles from "./cardList.module.css";
 import Pagination from "../pagination/Pagination";
-import Image from "next/image";
 import Card from "../card/Card";
+import { client } from "@/utils/sanity";
 
 const getData = async (page, cat) => {
-  const res = await fetch(
-    `http://localhost:3000/api/posts?page=${page}&cat=${cat || ""}`,
-    {
-      cache: "no-store",
-    }
-  );
+  const POST_PER_PAGE = 2;
+  const skip = POST_PER_PAGE * (page - 1);
+  const end = skip + POST_PER_PAGE;
 
-  if (!res.ok) {
+  try {
+    let query = `*[_type == "post"`;
+    if (cat) {
+      query += ` && $cat in categories[]->slug.current`;
+    }
+    query += `]`;
+
+    const countQuery = `count(${query})`;
+    const postsQuery = `${query} | order(_createdAt desc) [$skip...$end] {
+      _id,
+      title,
+      desc,
+      "slug": slug.current,
+      mainImage,
+      publishedAt,
+      _createdAt,
+      views,
+      "catSlug": categories[0]->slug.current,
+      author->{name, email, image}
+    }`;
+
+    const [posts, count] = await Promise.all([
+      client.fetch(postsQuery, { cat, skip, end }),
+      client.fetch(countQuery, { cat })
+    ]);
+
+    return { posts, count };
+  } catch (err) {
+    console.error("[POSTS_GET_ERROR]", err);
     throw new Error("Failed");
   }
-
-  return res.json();
 };
 
 const CardList = async ({ page, cat }) => {
@@ -28,14 +50,16 @@ const CardList = async ({ page, cat }) => {
   const hasNext = POST_PER_PAGE * (page - 1) + POST_PER_PAGE < count;
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Recent Posts</h1>
-      <div className={styles.posts}>
+    <div className="flex-[5] mt-12 mb-12">
+      <h1 className="text-3xl font-bold mb-8 tracking-tight">Recent Posts</h1>
+      <div className="flex flex-col gap-12">
         {posts?.map((item) => (
           <Card item={item} key={item._id} />
         ))}
       </div>
-      <Pagination page={page} hasPrev={hasPrev} hasNext={hasNext} />
+      <div className="mt-12">
+        <Pagination page={page} hasPrev={hasPrev} hasNext={hasNext} />
+      </div>
     </div>
   );
 };

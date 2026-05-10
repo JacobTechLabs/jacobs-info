@@ -2,8 +2,7 @@ import Navbar from "@/components/navbar/Navbar";
 import "./globals.css";
 import { Outfit } from "next/font/google";
 import Footer from "@/components/footer/Footer";
-import { ThemeContextProvider } from "@/context/ThemeContext";
-import ThemeProvider from "@/providers/ThemeProvider";
+import { ThemeProvider } from "@/components/theme-provider";
 import AuthProvider from "@/providers/AuthProvider";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
@@ -65,17 +64,22 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body className={outfit.className}>
         <AuthProvider>
-          <ThemeContextProvider>
-            <ThemeProvider>
-              <div className="container">
-                <div className="wrapper">
-                  <Navbar />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="min-h-screen bg-background text-foreground flex flex-col">
+              <div className="container mx-auto px-4 md:px-10 lg:px-20 max-w-7xl flex-1 flex flex-col">
+                <Navbar />
+                <main className="flex-1">
                   {children}
-                  <Footer />
-                </div>
+                </main>
+                <Footer />
               </div>
-            </ThemeProvider>
-          </ThemeContextProvider>
+            </div>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

@@ -1,51 +1,38 @@
 "use client";
 import Link from "next/link";
-import styles from "./authLinks.module.css";
-import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
-const AuthLinks = () => {
-  const [open, setOpen] = useState(false);
-
+const AuthLinks = ({ isMobile = false }) => {
   const { status } = useSession();
 
+  const handleLogout = () => {
+    signOut();
+  };
+
+  const containerClass = isMobile ? "flex flex-col gap-4" : "flex items-center gap-4";
+
   return (
-    <>
+    <div className={containerClass}>
       {status === "unauthenticated" ? (
-        <Link href="/login" className={styles.link}>
-          Login
+        <Link href="/login" className={isMobile ? "w-full" : ""}>
+          <Button variant="default" className={isMobile ? "w-full" : ""}>
+            Login
+          </Button>
         </Link>
       ) : (
         <>
-          <Link href="/write" className={styles.link}>
-            Write
+          <Link href="/studio" className={isMobile ? "w-full" : ""}>
+            <Button variant="secondary" className={isMobile ? "w-full" : ""}>
+              Write
+            </Button>
           </Link>
-          <span className={styles.link} onClick={signOut}>
+          <Button variant="outline" onClick={handleLogout} className={isMobile ? "w-full" : ""}>
             Logout
-          </span>
+          </Button>
         </>
       )}
-      <div className={styles.burger} onClick={() => setOpen(!open)}>
-        <div className={styles.line}></div>
-        <div className={styles.line}></div>
-        <div className={styles.line}></div>
-      </div>
-      {open && (
-        <div className={styles.responsiveMenu}>
-          <Link href="/">Homepage</Link>
-          <Link href="/">About</Link>
-          <Link href="/">Contact</Link>
-          {status === "notauthenticated" ? (
-            <Link href="/login">Login</Link>
-          ) : (
-            <>
-              <Link href="/write">Write</Link>
-              <span className={styles.link}>Logout</span>
-            </>
-          )}
-        </div>
-      )}
-    </>
+    </div>
   );
 };
 
